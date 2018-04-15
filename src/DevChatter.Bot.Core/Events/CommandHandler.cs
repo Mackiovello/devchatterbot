@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
@@ -34,12 +34,12 @@ namespace DevChatter.Bot.Core.Events
                 _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.Now);
 
                 var previousUsage = _usageTracker.GetByUserDisplayName(userDisplayName);
-                if (previousUsage != null)
+                if (previousUsage != null && previousUsage.Any())
                 {
-                    if (!previousUsage.WasUserWarned)
+                    if (previousUsage.All(x => !x.WasUserWarned))
                     {
                         chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
-                        previousUsage.WasUserWarned = true;
+                        previousUsage.ForEach(x => x.WasUserWarned = true);
                     }
 
                     return;

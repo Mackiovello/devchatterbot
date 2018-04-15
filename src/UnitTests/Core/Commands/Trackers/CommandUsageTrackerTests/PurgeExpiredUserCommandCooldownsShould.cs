@@ -11,7 +11,7 @@ namespace UnitTests.Core.Commands.Trackers.CommandUsageTrackerTests
         [Fact]
         public void DoNothing_GivenNoUsages()
         {
-            var tracker = GetTestTracker(1);
+            var (tracker, _, _) = GetTestData(1);
 
             tracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.UtcNow);
 
@@ -23,14 +23,12 @@ namespace UnitTests.Core.Commands.Trackers.CommandUsageTrackerTests
         [Fact]
         public void PurgeOneUsage_GivenCooldownPassed()
         {
-            const int cooldown = 1;
-            var timeInvoked = DateTimeOffset.UtcNow;
-            var displayName = Guid.NewGuid().ToString();
-            var tracker = GetTestTracker(cooldown);
+            var cooldown = 1;
+            var (tracker, _, time) = GetTestData(cooldown);
 
-            tracker.RecordUsage(new CommandUsage(Guid.NewGuid().ToString(), timeInvoked));
+            tracker.RecordUsage(new CommandUsage(Guid.NewGuid().ToString(), time));
 
-            tracker.PurgeExpiredUserCommandCooldowns(timeInvoked.AddSeconds(cooldown));
+            tracker.PurgeExpiredUserCommandCooldowns(time.AddSeconds(cooldown));
 
             var usage = tracker.GetByUserDisplayName(Guid.NewGuid().ToString());
 
@@ -40,28 +38,40 @@ namespace UnitTests.Core.Commands.Trackers.CommandUsageTrackerTests
         [Fact]
         public void PurgeNothing_GivenCooldownNotPassed()
         {
-            const int cooldown = 1;
-            var timeInvoked = DateTimeOffset.UtcNow;
-            var displayName = Guid.NewGuid().ToString();
-            var tracker = GetTestTracker(cooldown);
+            var (tracker, displayName, time) = GetTestData(1);
 
-            tracker.RecordUsage(new CommandUsage(displayName, timeInvoked));
+            tracker.RecordUsage(new CommandUsage(displayName, time));
 
-            tracker.PurgeExpiredUserCommandCooldowns(timeInvoked);
+            tracker.PurgeExpiredUserCommandCooldowns(time);
 
             var usage = tracker.GetByUserDisplayName(displayName);
 
             usage.Should().NotBeNull();
         }
 
-        private static CommandUsageTracker GetTestTracker(int globalCommandCooldown)
+        [Fact]
+        public void LeaveUsages_GivenSomeAreNotReadyToPurge()
+        {
+            var (tracker, displayName, time) = GetTestData(1);
+
+            tracker.RecordUsage(new CommandUsage(displayName, time));
+            tracker.RecordUsage(new CommandUsage(displayName, time.AddSeconds(1)));
+
+            tracker.PurgeExpiredUserCommandCooldowns(time);
+
+            var usage = tracker.GetByUserDisplayName(displayName);
+
+            usage.Should().NotBeNull();
+        }
+
+        private static (CommandUsageTracker, string, DateTimeOffset) GetTestData(int globalCommandCooldown)
         {
             var commandHandlerSettings = new CommandHandlerSettings
             {
                 GlobalCommandCooldown = globalCommandCooldown
             };
             var commandUsageTracker = new CommandUsageTracker(commandHandlerSettings);
-            return commandUsageTracker;
+            return (commandUsageTracker, Guid.NewGuid().ToString(), DateTimeOffset.UtcNow);
         }
     }
 }
