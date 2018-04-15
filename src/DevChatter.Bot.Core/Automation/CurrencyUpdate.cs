@@ -1,6 +1,6 @@
-﻿using System;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Util;
+using System;
 
 namespace DevChatter.Bot.Core.Automation
 {

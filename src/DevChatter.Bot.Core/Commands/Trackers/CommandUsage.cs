@@ -1,5 +1,5 @@
-using System;
 using DevChatter.Bot.Core.Commands.Operations;
+using System;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {

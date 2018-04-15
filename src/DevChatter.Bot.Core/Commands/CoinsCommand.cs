@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
@@ -7,6 +5,8 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
+using System;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands
 {

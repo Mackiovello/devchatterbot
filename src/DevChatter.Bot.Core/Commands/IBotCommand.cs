@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 

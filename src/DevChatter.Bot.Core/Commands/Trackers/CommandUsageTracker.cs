@@ -1,9 +1,9 @@
+using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
+using DevChatter.Bot.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Extensions;
-using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Events.Args;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {

@@ -1,4 +1,4 @@
-﻿namespace DevChatter.Bot.Core.Automation
+namespace DevChatter.Bot.Core.Automation
 {
     public interface IAutomatedActionSystem
     {

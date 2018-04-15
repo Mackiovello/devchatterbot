@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands.Operations
 {

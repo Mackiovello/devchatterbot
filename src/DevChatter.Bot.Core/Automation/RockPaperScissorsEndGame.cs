@@ -1,6 +1,6 @@
-﻿using System;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 using DevChatter.Bot.Core.Systems.Chat;
+using System;
 
 namespace DevChatter.Bot.Core.Automation
 {
