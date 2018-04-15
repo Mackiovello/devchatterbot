@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {
     public class CommandUsage
     {
-        public CommandUsage(string displayName, DateTimeOffset timeInvoked, bool wasUserWarned)
+        public CommandUsage(string displayName, DateTimeOffset timeInvoked, bool wasUserWarned = false)
         {
             DisplayName = displayName;
             TimeInvoked = timeInvoked;
