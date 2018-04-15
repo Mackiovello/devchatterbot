@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -21,11 +22,12 @@ namespace DevChatter.Bot.Core.Commands
             _followerService = followerService;
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string streamName = eventArgs.Arguments?.FirstOrDefault()?.NoAt() ?? GetRandomFollowedStream();
 
             chatClient.SendMessage(FormatMessage(streamName));
+            return CommandUsage(eventArgs);
         }
 
         private string GetRandomFollowedStream()

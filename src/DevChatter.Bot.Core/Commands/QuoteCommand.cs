@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -22,7 +23,7 @@ namespace DevChatter.Bot.Core.Commands
                        + $" a quote. For example, \"!{PrimaryCommandText} add \"Oh what a day!\" Brendoneus creates a new quote.";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs?.Arguments?.ElementAtOrDefault(0);
             string quoteText = eventArgs?.Arguments?.ElementAtOrDefault(1);
@@ -44,6 +45,8 @@ namespace DevChatter.Bot.Core.Commands
 
                     break;
             }
+
+            return CommandUsage(eventArgs);
         }
 
         private void AddNewQuote(IChatClient chatClient, string quoteText, string author, ChatUser chatUser)

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -19,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             _repository = repository;
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs.Arguments?.FirstOrDefault();
             string argumentTwo = eventArgs.Arguments?.ElementAtOrDefault(1);
@@ -31,6 +32,8 @@ namespace DevChatter.Bot.Core.Commands
             {
                 ShoutOutRandomStreamers(chatClient);
             }
+
+            return CommandUsage(eventArgs);
         }
 
         private void ShoutOutRandomStreamers(IChatClient chatClient)

@@ -1,5 +1,6 @@
-﻿using System.Linq;
+using System.Linq;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -22,7 +23,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 "Use \"!hangman\" to start a game. Use \"!hangman x\" to guess a letter. Use \"!hangman word\" to guess a word.";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs?.Arguments?.FirstOrDefault();
             ChatUser chatUser = eventArgs?.ChatUser;
@@ -44,6 +45,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
                     _hangmanGame.GuessWord(chatClient, argumentOne, chatUser);
                 }
             }
+
+            return CommandUsage(eventArgs);
         }
     }
 }

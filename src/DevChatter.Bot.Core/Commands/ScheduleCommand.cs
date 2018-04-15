@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
@@ -17,11 +18,11 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "To see our schedule just type !schedule and to see it in another timezone, pass your UTC offset. Example: !schedule -4";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (!int.TryParse(eventArgs?.Arguments?.ElementAtOrDefault(0), out int offset) || offset > 18 || offset < -18)
             {
-                return;
+                return CommandUsage(eventArgs);
             }
 
             DateTimeZone timeZone = DateTimeZone.ForOffset(Offset.FromHours(offset));
@@ -38,6 +39,7 @@ namespace DevChatter.Bot.Core.Commands
                         + ", Saturdays at " + saturday.InZone(timeZone).TimeOfDay;
 
             chatClient.SendMessage(message);
+            return CommandUsage(eventArgs);
         }
 
         private Instant GetInstanceOf(DayOfWeek dayOfWeek, int hour, int minutes)

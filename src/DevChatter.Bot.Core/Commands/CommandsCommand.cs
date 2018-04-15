@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands.Operations;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
@@ -25,7 +26,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public IList<IBotCommand> AllCommands { get; set; }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string oper = eventArgs?.Arguments?.ElementAtOrDefault(0);
 
@@ -39,6 +40,8 @@ namespace DevChatter.Bot.Core.Commands
             {
                 ShowAllCommands(chatClient, eventArgs?.ChatUser);
             }
+
+            return CommandUsage(eventArgs);
         }
 
         private void ShowAllCommands(IChatClient chatClient, ChatUser eventArgsChatUser)

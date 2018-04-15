@@ -1,5 +1,7 @@
-﻿using System.Linq;
+using System;
+using System.Linq;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -16,9 +18,10 @@ namespace UnitTests.Fakes
             NotifyWordsModified();
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             ProcessWasCalled = true;
+            return new CommandUsage(eventArgs?.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
         }
 
         public bool ProcessWasCalled { get; set; }

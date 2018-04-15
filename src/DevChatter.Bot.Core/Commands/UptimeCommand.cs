@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -19,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Just type \"!uptime\" and it will tell you how long we've been streaming.";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             TimeSpan? timeSpan = _streamingPlatform.GetUptimeAsync().Result;
             if (timeSpan.HasValue)
@@ -30,6 +31,8 @@ namespace DevChatter.Bot.Core.Commands
             {
                 chatClient.SendMessage("Something's Wrong. Are we live right now?");
             }
+
+            return CommandUsage(eventArgs);
         }
     }
 }

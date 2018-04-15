@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
@@ -17,12 +18,12 @@ namespace DevChatter.Bot.Core.Commands
 
         public IEnumerable<IBotCommand> AllCommands { get; set; }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (eventArgs.Arguments.Count == 0)
             {
                 ShowAvailableCommands(chatClient, eventArgs.ChatUser);
-                return;
+                return CommandUsage(eventArgs);
             }
 
             string argOne = eventArgs.Arguments?.ElementAtOrDefault(0);
@@ -31,13 +32,13 @@ namespace DevChatter.Bot.Core.Commands
             {
                 chatClient.SendMessage(
                     $"Use !help to see available commands. To request help for a specific command just type !help [commandname] example: !help hangman");
-                return;
+                return CommandUsage(eventArgs);
             }
 
             if (argOne == "↑, ↑, ↓, ↓, ←, →, ←, →, B, A, start, select")
             {
                 chatClient.SendMessage("Please be sure to drink your ovaltine.");
-                return;
+                return CommandUsage(eventArgs);
             }
 
             bool isVerboseMode = false;
@@ -60,6 +61,8 @@ namespace DevChatter.Bot.Core.Commands
                     chatClient.SendMessage(requestedCommand.HelpText);
                 }
             }
+
+            return CommandUsage(eventArgs);
         }
 
         private void ShowAvailableCommands(IChatClient chatClient, ChatUser chatUser)

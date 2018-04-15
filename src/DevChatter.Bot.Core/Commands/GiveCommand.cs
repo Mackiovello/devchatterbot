@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -19,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Give coins to someone. Example !give LNGgrinds 10";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string coinGiver = eventArgs?.ChatUser?.DisplayName;
             string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0).NoAt();
@@ -29,7 +30,7 @@ namespace DevChatter.Bot.Core.Commands
                 string.IsNullOrWhiteSpace(coinGiver))
             {
                 chatClient.SendMessage(HelpText);
-                return;
+                return CommandUsage(eventArgs);
             }
 
             if (int.TryParse(coinsToGiveText, out int coinsToGive))
@@ -37,7 +38,7 @@ namespace DevChatter.Bot.Core.Commands
                 if (coinsToGive < 2)
                 {
                     chatClient.SendMessage("Cheapskate. You should consider giving more coins...");
-                    return;
+                    return CommandUsage(eventArgs);
                 }
 
                 if (_chatUserCollection.TryGiveCoins(coinGiver, coinReceiver, coinsToGive))
@@ -54,6 +55,8 @@ namespace DevChatter.Bot.Core.Commands
             {
                 chatClient.SendMessage($"Is that even a number, {coinGiver}?");
             }
+
+            return CommandUsage(eventArgs);
         }
     }
 }

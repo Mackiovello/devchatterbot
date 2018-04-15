@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
@@ -31,11 +32,12 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
 
-        public virtual void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public virtual CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             IEnumerable<string> findTokens = StaticResponse.FindTokens();
             string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
             chatClient.SendMessage(textToSend);
+            return new CommandUsage(eventArgs?.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
         }
 
         private string ReplaceTokens(string textToSend, IEnumerable<string> tokens, CommandReceivedEventArgs eventArgs)
