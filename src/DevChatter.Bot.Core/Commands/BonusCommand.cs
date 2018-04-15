@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -20,14 +21,14 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Use the bonus command to give free coins to someone example: !bonus sadukie 50";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string bonusReceiver = (eventArgs?.Arguments?.ElementAtOrDefault(0) ?? "").NoAt();
             string bonusGiver = eventArgs?.ChatUser?.DisplayName;
             if (bonusGiver == bonusReceiver)
             {
                 chatClient.SendMessage($"Did you seriously think this would work, {bonusGiver}");
-                return;
+                return CommandUsage(eventArgs);
             }
 
             if (int.TryParse(eventArgs?.Arguments?.ElementAtOrDefault(1), out int amount))
@@ -35,12 +36,14 @@ namespace DevChatter.Bot.Core.Commands
                 if (amount < 0)
                 {
                     chatClient.SendMessage($"Quit messing around, {bonusGiver}. You can't give negative amounts.");
-                    return;
+                    return CommandUsage(eventArgs);
                 }
 
                 _currencyGenerator.AddCurrencyTo(new List<string> {bonusReceiver}, amount); // TODO: prevent overflow
                 chatClient.SendMessage($"Added {amount} coins to @{bonusReceiver}.");
             }
+
+            return CommandUsage(eventArgs);
         }
     }
 }

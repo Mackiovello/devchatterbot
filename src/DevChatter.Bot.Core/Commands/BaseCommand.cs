@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -45,6 +47,11 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText) => _isEnabled && CommandWords.Any(x => x.EqualsIns(commandText));
 
-        public abstract void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
+        public abstract CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
+
+        protected CommandUsage CommandUsage(CommandReceivedEventArgs eventArgs)
+        {
+            return new CommandUsage(eventArgs?.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
+        }
     }
 }

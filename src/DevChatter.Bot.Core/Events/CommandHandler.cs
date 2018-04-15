@@ -49,18 +49,19 @@ namespace DevChatter.Bot.Core.Events
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);
-                    _usageTracker.RecordUsage(new CommandUsage(userDisplayName, DateTimeOffset.Now, false));
                 }
             }
         }
 
-        private void AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand, IChatClient chatClient1)
+        private void AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand,
+            IChatClient chatClient1)
         {
             try
             {
                 if (e.ChatUser.CanUserRunCommand(botCommand))
                 {
-                    botCommand.Process(chatClient1, e);
+                    var commandUsage = botCommand.Process(chatClient1, e);
+                    _usageTracker.RecordUsage(commandUsage);
                 }
                 else
                 {

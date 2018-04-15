@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {
@@ -36,9 +37,15 @@ namespace DevChatter.Bot.Core.Commands.Trackers
             }
         }
 
-        public List<CommandUsage> GetByUserDisplayName(string userDisplayName)
+        public List<CommandUsage> GetByUserDisplayName(string displayName)
         {
-            return _userCommandUsages.Where(x => x.DisplayName.EqualsIns(userDisplayName)).ToList();
+            return _userCommandUsages.Where(x => x.DisplayName.EqualsIns(displayName)).ToList();
+        }
+
+        public List<CommandUsage> GetByUserDisplayNameAndCommandOperation(string displayName, CommandReceivedEventArgs eventArgs)
+        {
+            throw new NotImplementedException();
+            //return GetByUserDisplayName(displayName).Where(x => x).ToList();
         }
 
         public void RecordUsage(CommandUsage commandUsage)

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -20,7 +21,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Use \"!coins\" to see your current coin total, or use \"!coins SomeoneElse\" to see another user's coin total.";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             try
             {
@@ -40,6 +41,8 @@ namespace DevChatter.Bot.Core.Commands
             {
                 Console.WriteLine(e);
             }
+
+            return CommandUsage(eventArgs);
         }
     }
 }

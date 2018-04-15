@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands.Operations;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -34,7 +35,7 @@ namespace DevChatter.Bot.Core.Commands
         public override string FullHelpText => "Alias manages aliases for existing commands. "
                                                + string.Join(" ", _operations.Select(x => x.HelpText));
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             var oper = eventArgs?.Arguments?.ElementAtOrDefault(0)?.ToLowerInvariant();
             var word = eventArgs?.Arguments?.ElementAtOrDefault(1)?.ToLowerInvariant();
@@ -42,7 +43,7 @@ namespace DevChatter.Bot.Core.Commands
             if (string.IsNullOrEmpty(oper) || string.IsNullOrEmpty(word))
             {
                 chatClient.SendMessage(HelpText);
-                return;
+                return CommandUsage(eventArgs);
             }
 
             var typeName = _repository.Single(CommandWordPolicy.ByWord(word))?.FullTypeName;
@@ -50,7 +51,7 @@ namespace DevChatter.Bot.Core.Commands
             if (typeName == null)
             {
                 chatClient.SendMessage($"The command '!{word}' doesn't exist.");
-                return;
+                return CommandUsage(eventArgs);
             }
 
             var operationToUse = _operations.SingleOrDefault(x => x.ShouldExecute(oper));
@@ -64,6 +65,8 @@ namespace DevChatter.Bot.Core.Commands
             {
                 chatClient.SendMessage(HelpText);
             }
+
+            return CommandUsage(eventArgs);
         }
     }
 }

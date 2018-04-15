@@ -26,7 +26,7 @@ namespace UnitTests.Core.Commands.Trackers.CommandUsageTrackerTests
             var cooldown = 1;
             var (tracker, _, time) = GetTestData(cooldown);
 
-            tracker.RecordUsage(new CommandUsage(Guid.NewGuid().ToString(), time));
+            tracker.RecordUsage(new CommandUsage(Guid.NewGuid().ToString(), time, null));
 
             tracker.PurgeExpiredUserCommandCooldowns(time.AddSeconds(cooldown));
 
@@ -40,7 +40,7 @@ namespace UnitTests.Core.Commands.Trackers.CommandUsageTrackerTests
         {
             var (tracker, displayName, time) = GetTestData(1);
 
-            tracker.RecordUsage(new CommandUsage(displayName, time));
+            tracker.RecordUsage(new CommandUsage(displayName, time, null));
 
             tracker.PurgeExpiredUserCommandCooldowns(time);
 
@@ -54,8 +54,8 @@ namespace UnitTests.Core.Commands.Trackers.CommandUsageTrackerTests
         {
             var (tracker, displayName, time) = GetTestData(1);
 
-            tracker.RecordUsage(new CommandUsage(displayName, time));
-            tracker.RecordUsage(new CommandUsage(displayName, time.AddSeconds(1)));
+            tracker.RecordUsage(new CommandUsage(displayName, time, null));
+            tracker.RecordUsage(new CommandUsage(displayName, time.AddSeconds(1), null));
 
             tracker.PurgeExpiredUserCommandCooldowns(time);
 
