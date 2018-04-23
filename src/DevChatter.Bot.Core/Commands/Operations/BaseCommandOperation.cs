@@ -11,6 +11,8 @@ namespace DevChatter.Bot.Core.Commands.Operations
         public abstract List<string> OperandWords { get; }
         public abstract string HelpText { get; }
 
+        public int Ordinal { get; } = 0;
+
         public virtual bool ShouldExecute(string operand)
         {
             return OperandWords.Any(w => w.EqualsIns(operand));

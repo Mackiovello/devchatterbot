@@ -15,7 +15,8 @@ namespace DevChatter.Bot.Core.Commands
         public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
         {
             new AddCommandOperation(Repository, AllCommands),
-            new DeleteCommandOperation(Repository, AllCommands)
+            new DeleteCommandOperation(Repository, AllCommands),
+            new DefaultOperation(ShowAllCommands)
         });
 
         public CommandsCommand(IRepository repository)
@@ -41,7 +42,7 @@ namespace DevChatter.Bot.Core.Commands
             }
         }
 
-        private void ShowAllCommands(IChatClient chatClient, ChatUser eventArgsChatUser)
+        private string ShowAllCommands(IChatClient chatClient, ChatUser eventArgsChatUser)
         {
             var listOfCommands = AllCommands.Where(eventArgsChatUser.CanUserRunCommand)
                 .Select(x => $"!{x.PrimaryCommandText}").ToList();
