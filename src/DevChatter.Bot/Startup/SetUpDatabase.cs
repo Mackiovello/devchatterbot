@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Data.Caching;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Messaging;
@@ -23,7 +24,7 @@ namespace DevChatter.Bot.Startup
             var appDataContext = new AppDataContext(options);
 
             EnsureDatabase(appDataContext);
-            IRepository repository = new EfGenericRepo(appDataContext);
+            IRepository repository = new CachedRepository(new EfGenericRepo(appDataContext), new InMemoryCacheLayer());
             EnsureInitialData(repository);
 
             return repository;
