@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\DevChatter.Bot.Core\DevChatter.Bot.Core.csproj" />
+    <ProjectReference Include="..\DevChatter.Bot.Infra.Ef\DevChatter.Bot.Infra.Ef.csproj" />
+    <ProjectReference Include="..\DevChatter.Bot.Infra.Twitch\DevChatter.Bot.Infra.Twitch.csproj" />
+  </ItemGroup>
+
+
+</Project>
